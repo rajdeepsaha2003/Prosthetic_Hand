@@ -1,0 +1,9 @@
+// Servo pin (Change as per your connection)
+THUMB_PIN D2 
+INDEX_PIN D3
+MIDD_PIN D5
+RING_PIN D6
+PINKY_PIN D9
+
+// Pin for writing
+writePin D10

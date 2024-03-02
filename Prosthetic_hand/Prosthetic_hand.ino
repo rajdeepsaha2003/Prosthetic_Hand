@@ -56,11 +56,14 @@ Servo ring;
 Servo pinky;
 
 // Servo pin (Change as per your connection)
-#define THUMB_PIN 2 // Pin2 for Muscle BioAmp Shield v0.3
+#define THUMB_PIN 2 
 #define INDEX_PIN 3
 #define MIDD_PIN 5
 #define RING_PIN 6
 #define PINKY_PIN 9
+
+// Pin for writing
+#define writePin 10
 
 // EMG Threshold value, different for each user
 // Check by plotting EMG envelopee data on Serial plotter
@@ -91,16 +94,17 @@ int circular_buffer[BUFFER_SIZE];
 int data_index, sum;
 
 // Muscle BioAmp Shield v0.3 LED pin numbers in-order
-int led_bar[] = {8, 9, 10, 11, 12, 13};
-int total_leds = sizeof(led_bar) / sizeof(led_bar[0]);
+// int led_bar[] = {8, 9, 10, 11, 12, 13};
+// int total_leds = sizeof(led_bar) / sizeof(led_bar[0]);
 
 void setup() {
   // Serial connection begin
   Serial.begin(BAUD_RATE);
   // Initialize all the led_bar
-    for (int i = 0; i < total_leds; i++) {
-      pinMode(led_bar[i], OUTPUT);
-    }
+    // for (int i = 0; i < total_leds; i++) {
+    //   pinMode(led_bar[i], OUTPUT);
+    // }
+    pinMode(writePin,INPUT);
    thumb.attach(THUMB_PIN);
    thumb.write(0);
    index.attach(INDEX_PIN);
@@ -138,48 +142,54 @@ void loop() {
     int envelope = getEnvelope(abs(signal));
 
     // Update LED bar graph
-    for(int i = 0; i<=total_leds; i++){
-      if(i>(envelope/EMG_ENVELOPE_DIVIDER - EMG_ENVELOPE_BASELINE)){
-          digitalWrite(led_bar[i], LOW);
-      } else {
-          digitalWrite(led_bar[i], HIGH);
-      }
+    // for(int i = 0; i<=total_leds; i++){
+    //   if(i>(envelope/EMG_ENVELOPE_DIVIDER - EMG_ENVELOPE_BASELINE)){
+    //       digitalWrite(led_bar[i], LOW);
+    //   } else {
+    //       digitalWrite(led_bar[i], HIGH);
+    //   }
+    // }
+    int writePin_value=digitalRead(writePin); 
+    if(writePin_value==HIGH){
+      Serial.println(writePin);
     }
-     
-    if(envelope > EMG_THRESHOLD) {
-      if((millis() - lastGestureTime) > gestureDelay){
-      if(flag == 1){
-        thumb.write(SERVO_OPEN);
-        delay(10);
-        index.write(SERVO_OPEN);
-        delay(10);
-        midd.write(SERVO_OPEN);
-        delay(10);
-        ring.write(SERVO_OPEN);
-        delay(10);
-        pinky.write(SERVO_OPEN);
-        delay(10);
-        flag = 0;
-        lastGestureTime = millis();
-        delay(100);
-      }
-      else {
-        thumb.write(SERVO_CLOSE);
-        delay(10);
-        index.write(SERVO_CLOSE);
-        delay(10);
-        midd.write(SERVO_CLOSE);
-        delay(10);
-        ring.write(SERVO_CLOSE);
-        delay(10);
-        pinky.write(SERVO_CLOSE);
-        delay(10);
-        flag = 1;
-        lastGestureTime = millis();
-        delay(100);
-      }
-      }
-    } 
+    else{
+      if(envelope > EMG_THRESHOLD) {
+        if((millis() - lastGestureTime) > gestureDelay){
+        if(flag == 1){
+          thumb.write(SERVO_OPEN);
+          delay(10);
+          index.write(SERVO_OPEN);
+          delay(10);
+          midd.write(SERVO_OPEN);
+          delay(10);
+          ring.write(SERVO_OPEN);
+          delay(10);
+          pinky.write(SERVO_OPEN);
+          delay(10);
+          flag = 0;
+          lastGestureTime = millis();
+          delay(100);
+        }
+        else {
+          thumb.write(SERVO_CLOSE);
+          delay(10);
+          index.write(SERVO_CLOSE);
+          delay(10);
+          midd.write(SERVO_CLOSE);
+          delay(10);
+          ring.write(SERVO_CLOSE);
+          delay(10);
+          pinky.write(SERVO_CLOSE);
+          delay(10);
+          flag = 1;
+          lastGestureTime = millis();
+          delay(100);
+        }
+        }
+      } 
+    }
+    
     
     // EMG Raw signal
     // Serial.print(signal);
