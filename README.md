@@ -1,4 +1,5 @@
-﻿**Title: An EMG based cost effective Prosthetic hand** 
+﻿#Title: An EMG based cost effective Prosthetic hand 
+
 
 **Rajdeep Saha, Abhijit Biswas, Saradwat Sen and Sayani Dhali**
 
