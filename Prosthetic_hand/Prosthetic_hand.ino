@@ -64,6 +64,7 @@ Servo pinky;
 
 // Pin for writing
 #define writePin 10
+#define writeEN 11
 
 // EMG Threshold value, different for each user
 // Check by plotting EMG envelopee data on Serial plotter
@@ -105,6 +106,8 @@ void setup() {
     //   pinMode(led_bar[i], OUTPUT);
     // }
     pinMode(writePin,INPUT);
+    pinMode(writeEN,INPUT);
+ 
    thumb.attach(THUMB_PIN);
    thumb.write(0);
    index.attach(INDEX_PIN);
@@ -149,39 +152,68 @@ void loop() {
     //       digitalWrite(led_bar[i], HIGH);
     //   }
     // }
-    int writePin_value=digitalRead(writePin); 
-    if(writePin_value==HIGH){
-      Serial.println(writePin);
+    int writePin_value=digitalRead(writePin);
+    int write_value=digitalRead(writeEN); 
+    if(write_value==HIGH){
+      if(writePin_value==HIGH){
+          thumb.write(SERVO_CLOSE);
+          delay(50);
+          index.write(SERVO_CLOSE);
+          delay(50);
+          midd.write(SERVO_CLOSE);
+          delay(50);
+          ring.write(SERVO_OPEN);
+          delay(50);
+          pinky.write(SERVO_OPEN);
+          delay(100);
+          Serial.println(writePin);
+      }
+      else{
+        thumb.write(SERVO_OPEN);
+          delay(50);
+          index.write(SERVO_OPEN);
+          delay(50);
+          midd.write(SERVO_OPEN);
+          delay(50);
+          ring.write(SERVO_OPEN);
+          delay(50);
+          pinky.write(SERVO_OPEN);
+          delay(50);
+          flag = 0;
+          lastGestureTime = millis();
+          delay(100);
+      }
+      
     }
     else{
       if(envelope > EMG_THRESHOLD) {
         if((millis() - lastGestureTime) > gestureDelay){
         if(flag == 1){
           thumb.write(SERVO_OPEN);
-          delay(10);
+          delay(50);
           index.write(SERVO_OPEN);
-          delay(10);
+          delay(50);
           midd.write(SERVO_OPEN);
-          delay(10);
+          delay(50);
           ring.write(SERVO_OPEN);
-          delay(10);
+          delay(50);
           pinky.write(SERVO_OPEN);
-          delay(10);
+          delay(50);
           flag = 0;
           lastGestureTime = millis();
           delay(100);
         }
         else {
           thumb.write(SERVO_CLOSE);
-          delay(10);
+          delay(50);
           index.write(SERVO_CLOSE);
-          delay(10);
+          delay(50);
           midd.write(SERVO_CLOSE);
-          delay(10);
+          delay(50);
           ring.write(SERVO_CLOSE);
-          delay(10);
+          delay(50);
           pinky.write(SERVO_CLOSE);
-          delay(10);
+          delay(50);
           flag = 1;
           lastGestureTime = millis();
           delay(100);

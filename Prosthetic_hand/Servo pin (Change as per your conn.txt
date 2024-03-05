@@ -7,3 +7,4 @@ PINKY_PIN D9
 
 // Pin for writing
 writePin D10
+#define writeEN 11
