@@ -68,7 +68,7 @@ Servo pinky;
 
 // EMG Threshold value, different for each user
 // Check by plotting EMG envelopee data on Serial plotter
-#define EMG_THRESHOLD 50
+#define EMG_THRESHOLD 0
 
 // Servo open & close angles
 #define SERVO_OPEN 0
@@ -189,31 +189,30 @@ void loop() {
       if(envelope > EMG_THRESHOLD) {
         if((millis() - lastGestureTime) > gestureDelay){
         if(flag == 1){
-          thumb.write(SERVO_OPEN);
-          delay(50);
-          index.write(SERVO_OPEN);
-          delay(50);
-          midd.write(SERVO_OPEN);
-          delay(50);
           ring.write(SERVO_OPEN);
-          delay(50);
+          thumb.write(SERVO_OPEN);
+          delay(350);
+          index.write(SERVO_OPEN);
+          delay(350);
+          midd.write(SERVO_OPEN);
+          delay(350);
           pinky.write(SERVO_OPEN);
-          delay(50);
+          delay(250);
+          
           flag = 0;
           lastGestureTime = millis();
           delay(100);
         }
         else {
-          thumb.write(SERVO_CLOSE);
-          delay(50);
-          index.write(SERVO_CLOSE);
-          delay(50);
-          midd.write(SERVO_CLOSE);
-          delay(50);
           ring.write(SERVO_CLOSE);
-          delay(50);
+          thumb.write(SERVO_CLOSE);
+          delay(350);
+          index.write(SERVO_CLOSE);
+          delay(350);
+          midd.write(SERVO_CLOSE);
+          delay(350);
           pinky.write(SERVO_CLOSE);
-          delay(50);
+          delay(250);
           flag = 1;
           lastGestureTime = millis();
           delay(100);
