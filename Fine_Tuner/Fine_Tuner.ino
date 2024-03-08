@@ -12,7 +12,7 @@ Servo pinkyFinger;
 #define INDEX_PIN 3
 #define MIDDLE_PIN 5
 #define RING_PIN 6
-#define PINKY_PIN 9
+#define PINKY_PIN 4
 
 void setup() {
   // Attaching each servo to its respective pin
@@ -25,19 +25,22 @@ void setup() {
 
 void loop() {
   // Open all servos
+  ringFinger.write(0);
+  delay(250);
   thumb.write(0);
   indexFinger.write(0);
   middleFinger.write(0);
-  ringFinger.write(0);
   pinkyFinger.write(0);
+ 
   
-  delay(2000); // 2-second delay
+  delay(3000); // 2-second delay
   
   // Close all servos
+  ringFinger.write(180);
+  delay(250);
   thumb.write(180);
   indexFinger.write(180);
   middleFinger.write(180);
-  ringFinger.write(180);
   pinkyFinger.write(180);
   
   delay(2000); // 2-second delay

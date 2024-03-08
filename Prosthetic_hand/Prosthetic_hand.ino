@@ -156,29 +156,23 @@ void loop() {
     int write_value=digitalRead(writeEN); 
     if(write_value==HIGH){
       if(writePin_value==HIGH){
-          thumb.write(SERVO_CLOSE);
-          delay(50);
-          index.write(SERVO_CLOSE);
-          delay(50);
-          midd.write(SERVO_CLOSE);
-          delay(50);
-          ring.write(SERVO_OPEN);
-          delay(50);
-          pinky.write(SERVO_OPEN);
+            // Close all servos
+          ringFinger.write(0);
+          delay(250);
+          thumb.write(180);
+          indexFinger.write(180);
+          middleFinger.write(180);
+          pinkyFinger.write(0);
           delay(100);
           Serial.println(writePin);
       }
       else{
-        thumb.write(SERVO_OPEN);
-          delay(50);
-          index.write(SERVO_OPEN);
-          delay(50);
-          midd.write(SERVO_OPEN);
-          delay(50);
-          ring.write(SERVO_OPEN);
-          delay(50);
-          pinky.write(SERVO_OPEN);
-          delay(50);
+        ringFinger.write(0);
+        delay(250);
+        thumb.write(0);
+        indexFinger.write(0);
+        middleFinger.write(0);
+        pinkyFinger.write(0);
           flag = 0;
           lastGestureTime = millis();
           delay(100);
@@ -189,30 +183,25 @@ void loop() {
       if(envelope > EMG_THRESHOLD) {
         if((millis() - lastGestureTime) > gestureDelay){
         if(flag == 1){
-          ring.write(SERVO_OPEN);
-          thumb.write(SERVO_OPEN);
-          delay(350);
-          index.write(SERVO_OPEN);
-          delay(350);
-          midd.write(SERVO_OPEN);
-          delay(350);
-          pinky.write(SERVO_OPEN);
+          ringFinger.write(0);s
           delay(250);
+          thumb.write(0);
+          indexFinger.write(0);
+          middleFinger.write(0);
+          pinkyFinger.write(0);
           
           flag = 0;
           lastGestureTime = millis();
           delay(100);
         }
         else {
-          ring.write(SERVO_CLOSE);
-          thumb.write(SERVO_CLOSE);
-          delay(350);
-          index.write(SERVO_CLOSE);
-          delay(350);
-          midd.write(SERVO_CLOSE);
-          delay(350);
-          pinky.write(SERVO_CLOSE);
+          // Close all servos
+          ringFinger.write(180);
           delay(250);
+          thumb.write(180);
+          indexFinger.write(180);
+          middleFinger.write(180);
+          pinkyFinger.write(180);
           flag = 1;
           lastGestureTime = millis();
           delay(100);
