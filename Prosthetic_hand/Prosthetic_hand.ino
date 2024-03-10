@@ -60,7 +60,7 @@ Servo pinky;
 #define INDEX_PIN 3
 #define MIDD_PIN 5
 #define RING_PIN 6
-#define PINKY_PIN 9
+#define PINKY_PIN 4
 
 // Pin for writing
 #define writePin 10
@@ -157,22 +157,22 @@ void loop() {
     if(write_value==HIGH){
       if(writePin_value==HIGH){
             // Close all servos
-          ringFinger.write(0);
+          ring.write(0);
           delay(250);
           thumb.write(180);
-          indexFinger.write(180);
-          middleFinger.write(180);
-          pinkyFinger.write(0);
+          index.write(180);
+          midd.write(180);
+          pinky.write(0);
           delay(100);
           Serial.println(writePin);
       }
       else{
-        ringFinger.write(0);
+        ring.write(0);
         delay(250);
         thumb.write(0);
-        indexFinger.write(0);
-        middleFinger.write(0);
-        pinkyFinger.write(0);
+        index.write(0);
+        midd.write(0);
+        pinky.write(0);
           flag = 0;
           lastGestureTime = millis();
           delay(100);
@@ -183,12 +183,12 @@ void loop() {
       if(envelope > EMG_THRESHOLD) {
         if((millis() - lastGestureTime) > gestureDelay){
         if(flag == 1){
-          ringFinger.write(0);s
+          ring.write(0);
           delay(250);
           thumb.write(0);
-          indexFinger.write(0);
-          middleFinger.write(0);
-          pinkyFinger.write(0);
+          index.write(0);
+          midd.write(0);
+          pinky.write(0);
           
           flag = 0;
           lastGestureTime = millis();
@@ -196,12 +196,12 @@ void loop() {
         }
         else {
           // Close all servos
-          ringFinger.write(180);
+          ring.write(180);
           delay(250);
           thumb.write(180);
-          indexFinger.write(180);
-          middleFinger.write(180);
-          pinkyFinger.write(180);
+          index.write(180);
+          midd.write(180);
+          pinky.write(180);
           flag = 1;
           lastGestureTime = millis();
           delay(100);

@@ -2,10 +2,10 @@
 
 // Initializing 5 servo fingers
 Servo thumb;
-Servo indexFinger;
-Servo middleFinger;
-Servo ringFinger;
-Servo pinkyFinger;
+Servo index;
+Servo midd;
+Servo ring;
+Servo pinky;
 
 // Servo pin (Change as per your connection)
 #define THUMB_PIN 2 
@@ -17,31 +17,31 @@ Servo pinkyFinger;
 void setup() {
   // Attaching each servo to its respective pin
   thumb.attach(THUMB_PIN);
-  indexFinger.attach(INDEX_PIN);
-  middleFinger.attach(MIDDLE_PIN);
-  ringFinger.attach(RING_PIN);
-  pinkyFinger.attach(PINKY_PIN);
+  index.attach(INDEX_PIN);
+  midd.attach(MIDDLE_PIN);
+  ring.attach(RING_PIN);
+  pinky.attach(PINKY_PIN);
 }
 
 void loop() {
   // Open all servos
-  ringFinger.write(0);
+  ring.write(0);
   delay(250);
   thumb.write(0);
-  indexFinger.write(0);
-  middleFinger.write(0);
-  pinkyFinger.write(0);
+  index.write(0);
+  midd.write(0);
+  pinky.write(0);
  
   
   delay(3000); // 2-second delay
   
   // Close all servos
-  ringFinger.write(180);
+  ring.write(180);
   delay(250);
   thumb.write(180);
-  indexFinger.write(180);
-  middleFinger.write(180);
-  pinkyFinger.write(180);
+  index.write(180);
+  midd.write(180);
+  pinky.write(180);
   
   delay(2000); // 2-second delay
 }
