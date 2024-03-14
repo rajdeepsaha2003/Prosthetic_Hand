@@ -21,12 +21,14 @@ void setup() {
   midd.attach(MIDDLE_PIN);
   ring.attach(RING_PIN);
   pinky.attach(PINKY_PIN);
+  Serial.begin(9600);
 }
 
 void loop() {
   // Open all servos
+  Serial.print("0\n");
   ring.write(0);
-  delay(250);
+  // delay(250);
   thumb.write(0);
   index.write(0);
   midd.write(0);
@@ -36,8 +38,9 @@ void loop() {
   delay(3000); // 2-second delay
   
   // Close all servos
+  Serial.print("180\n");
   ring.write(180);
-  delay(250);
+  // delay(250);
   thumb.write(180);
   index.write(180);
   midd.write(180);
