@@ -1,12 +1,11 @@
-// Claw Controller - BioAmp EXG Pill
-// Use for Bionic (wolverine) claw as well
+// Servo Control - BioAmp EXG Pill
 // https://github.com/upsidedownlabs/BioAmp-EXG-Pill
 
 // Upside Down Labs invests time and resources providing this open source code,
 // please support Upside Down Labs and open-source hardware by purchasing
 // products from Upside Down Labs!
 
-// Copyright (c) 2021 - 2023 Upside Down Labs - contact@upsidedownlabs.tech
+// Copyright (c) 2021 Upside Down Labs - contact@upsidedownlabs.tech
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +26,7 @@
 // SOFTWARE.
 
 #if defined(ESP32) 
-  // For ESP32 Servo library
+  // ESP32 Servo library
   #include <ESP32Servo.h>
 #else
   // Arduino Servo library
@@ -43,7 +42,7 @@
 // Change if not using A0 analog pin
 #define INPUT_PIN A0
 
-// envelopeee buffer size
+// envelopee buffer size
 // High value -> smooth but less responsive
 // Low value -> not smooth but responsive
 #define BUFFER_SIZE 64
@@ -62,65 +61,36 @@ Servo pinky;
 #define RING_PIN 6
 #define PINKY_PIN 4
 
-// Pin for writing
-#define writePin 10
-#define writeEN 11
-
 // EMG Threshold value, different for each user
 // Check by plotting EMG envelopee data on Serial plotter
-#define EMG_THRESHOLD 60
+#define EMG_THRESHOLD 47
 
 // Servo open & close angles
-#define SERVO_OPEN 0
+#define SERVO_OPEN 10
 #define SERVO_CLOSE 180
-
-// EMG Envelope baseline value
-// Minimum value without flexing hand
-#define EMG_ENVELOPE_BASELINE 4
-
-// EMG Envelope divider
-// Minimum value increase required to turn on a single LED
-#define EMG_ENVELOPE_DIVIDER 4
-
-
-Servo servo;
-// Servo toggle flag
-bool flag = 0;
-// Last gesture timestamp
-unsigned long lastGestureTime = 0;
-// Delay between two actions
-unsigned long gestureDelay = 240;
 
 int circular_buffer[BUFFER_SIZE];
 int data_index, sum;
-
-// Muscle BioAmp Shield v0.3 LED pin numbers in-order
-// int led_bar[] = {8, 9, 10, 11, 12, 13};
-// int total_leds = sizeof(led_bar) / sizeof(led_bar[0]);
+int flag=0;
+Servo servo;
 
 void setup() {
   // Serial connection begin
   Serial.begin(BAUD_RATE);
-  // Initialize all the led_bar
-    // for (int i = 0; i < total_leds; i++) {
-    //   pinMode(led_bar[i], OUTPUT);
-    // }
-    pinMode(writePin,INPUT);
-    pinMode(writeEN,INPUT);
- 
-   thumb.attach(THUMB_PIN);
-   thumb.write(0);
-   index.attach(INDEX_PIN);
-   index.write(0);
-   midd.attach(MIDD_PIN);
-   midd.write(0);
-   ring.attach(RING_PIN);
-   ring.write(0);
-   pinky.attach(PINKY_PIN);
-   pinky.write(0);
+  // Attach servo
+  thumb.attach(THUMB_PIN);
+  thumb.write(0);
+  index.attach(INDEX_PIN);
+  index.write(0);
+  midd.attach(MIDD_PIN);
+  midd.write(0);
+  ring.attach(RING_PIN);
+  ring.write(0);
+  pinky.attach(PINKY_PIN);
+  pinky.write(0);
 }
 
-void loop() {
+void loop() {  
   // Calculate elapsed time
   static unsigned long past = 0;
   unsigned long present = micros();
@@ -134,7 +104,7 @@ void loop() {
   // Sample and get envelope
   if(timer < 0) {
     timer += 1000000 / SAMPLE_RATE;
-   
+    
     // RAW EMG Values
     int sensor_value = analogRead(INPUT_PIN);
     
@@ -143,57 +113,31 @@ void loop() {
     
     // EMG envelopee
     int envelope = getEnvelope(abs(signal));
+    
+    // Move servo
+    if(envelope > EMG_THRESHOLD) {
+      ring.write(0);
+      thumb.write(0);
+      index.write(0);
+      midd.write(0);
+      pinky.write(0);
+      delay(100);
+    }
+    else {
+      ring.write(180);
+      thumb.write(180);
+      index.write(180);
+      midd.write(180);
+      pinky.write(180);
+      delay(100);
+    }
 
-    // Update LED bar graph
-    // for(int i = 0; i<=total_leds; i++){
-    //   if(i>(envelope/EMG_ENVELOPE_DIVIDER - EMG_ENVELOPE_BASELINE)){
-    //       digitalWrite(led_bar[i], LOW);
-    //   } else {
-    //       digitalWrite(led_bar[i], HIGH);
-    //   }
-    // }
-    int writePin_value=digitalRead(writePin);
-    int write_value=digitalRead(writeEN); 
-    
-      
-    
-    
-      if(envelope > EMG_THRESHOLD) {
-        if((millis() - lastGestureTime) > gestureDelay){
-        if(flag == 1){
-          ring.write(0);
-          thumb.write(0);
-          index.write(0);
-          midd.write(0);
-          pinky.write(0);
-          
-          flag = 0;
-          lastGestureTime = millis();
-          delay(100);
-        }
-        else {
-          // Close all servos
-          ring.write(180);
-          thumb.write(180);
-          index.write(180);
-          midd.write(180);
-          pinky.write(180);
-          flag = 1;
-          lastGestureTime = millis();
-          delay(100);
-        }
-        }
-      } 
-    
-    
-    
     // EMG Raw signal
     // Serial.print(signal);
     // // Data seprator
     // Serial.print(",");
-    // EMG envelopeee
+    // EMG envelopee
     Serial.println(envelope);
-
   }
 }
 

@@ -35,7 +35,7 @@ void loop() {
   pinky.write(0);
  
   
-  delay(3000); // 2-second delay
+  delay(1000); // 2-second delay
   
   // Close all servos
   Serial.print("180\n");
@@ -46,5 +46,5 @@ void loop() {
   midd.write(180);
   pinky.write(180);
   
-  delay(2000); // 2-second delay
+  delay(1000); // 2-second delay
 }
