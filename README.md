@@ -29,7 +29,7 @@ To minimize electrode-to-skin impedance, the electrodes are pre-gelled. Before a
 **2.1 Acquisition of signal using Muscle BioAmp Band**
 
 Three electrodes are used here to capture the EMG signal from the muscle of the forearm. Two of them are bipolar surface electrodes and one is a reference electrode. Then the signal is sent to the Muscle BioAmp Candy through BioAmp Cable and then to the Arduino Nano for further processing.
-![alt text]("C:\Users\rajde\OneDrive\Desktop\Prosthetic_Hand\Images\Picture1.png")
+![alt text]("\Images\Picture1.png")
 Figure 1 Electrodes placement for signal acquisition
 
 **2.2 Control of The Prosthetic Hand** 
